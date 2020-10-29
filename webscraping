@@ -1,3 +1,11 @@
+Sub get_title_header2()
+Dim wb As Object
+Dim Doc As Object
+Dim sURL As String
+Dim lastrow As Long
+'Dim i As Integer
+lastrow = Sheet1.Cells(Rows.Count, "A").End(xlUp).Row
+
 For i = 2 To lastrow
     Set wb = CreateObject("google.document")
     sURL = Cells(i, 1)
@@ -9,8 +17,7 @@ wb.navigate sURL
     Wend
 
     'HTML document
-    Set Doc = wb.document 
-    'the line above throws an error
+    Set Doc = wb.document
 
     Cells(i, 2) = Doc.title
 
@@ -18,7 +25,6 @@ wb.navigate sURL
 
     Dim el As Object
      For Each el In Doc.getElementsByTagName("p")
-
         counter = counter + 1
         Cells(i, counter + 2).Value = Cells(counter + 1).Value & el.innerText
 
@@ -27,7 +33,7 @@ wb.navigate sURL
 
 err_clear:
     If Err <> 0 Then
-        Err.Clear
+        Err.Clea
         Resume Next
     End If
     wb.Quit
@@ -35,3 +41,6 @@ err_clear:
 Next i
 
 End Sub
+
+
+
