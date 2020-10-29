@@ -1,0 +1,37 @@
+For i = 2 To lastrow
+    Set wb = CreateObject("google.document")
+    sURL = Cells(i, 1)
+wb.navigate sURL
+    wb.Visible = True
+
+    While wb.Busy
+        DoEvents
+    Wend
+
+    'HTML document
+    Set Doc = wb.document 
+    'the line above throws an error
+
+    Cells(i, 2) = Doc.title
+
+    On Error GoTo err_clear
+
+    Dim el As Object
+     For Each el In Doc.getElementsByTagName("p")
+
+        counter = counter + 1
+        Cells(i, counter + 2).Value = Cells(counter + 1).Value & el.innerText
+
+    Next el
+    counter = 0
+
+err_clear:
+    If Err <> 0 Then
+        Err.Clear
+        Resume Next
+    End If
+    wb.Quit
+    Range(Cells(i, 1), Cells(i, 10)).Columns.AutoFit
+Next i
+
+End Sub
